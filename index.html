@@ -4,16 +4,56 @@
     <meta charset="utf-8">
     <meta name="viewport" content="width=device-width, initial-scale=1">
     <title>Twilio Video</title>
-    <script src="https://aframe.io/releases/1.2.0/aframe.min.js"></script>
-  
+    <script src="https://aframe.io/aframe/dist/aframe-master.min.js"></script>
   </head>
-  
   <body>
     <a-scene>
+      <a-camera user-height="0" wasd-controls-enabled="false" arrow-key-rotation></a-camera>
+      </a-camera>
       <a-entity id="leftHand" hand-tracking-controls="hand: left;"></a-entity>
-      <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
+　　　 <a-entity id="rightHand" hand-tracking-controls="hand: right;"></a-entity>
       <a-gltf-model id="balcon" src="Balcon.gltf"  position="0 -1.5 -4" rotation="-5 180 0" scale="1.45 1.45 1.45"></a-gltf-model>
-      <a-sky color="#4CC3D9"></a-sky>
+      
+      
     </a-scene>
   </body>
+  <script>
+    var ctlLTriggerDown = false;
+    var ctlRTriggerDown = false;
+    const ctlL = document.getElementById("ctlL");
+    const ctlR = document.getElementById("ctlR");
+    const handCtlL = document.getElementById("leftHand");
+    const handCtlR = document.getElementById("rightHand");
+    const balcon = document.getElementById("balcon");
+    //Trigger Pressed
+    ctlL.addEventListener('triggerdown', function (event) {
+      ctlLTriggerDown = true;
+    });
+​
+    ctlR.addEventListener('triggerdown', function (event) {
+      ctlRTriggerDown = true;
+    });
+​
+    //Trigger Released
+    ctlL.addEventListener('triggerup', function (event) {
+      ctlLTriggerDown = false;
+    });
+    ctlR.addEventListener('triggerup', function (event) {
+      ctlRTriggerDown = false;
+    });
+    //Getting Position of Right Controller.
+    const timer = setInterval(() => {     
+      if (!ctlLTriggerDown || !ctlRTriggerDown) return;
+      var ctlRPos=handCtlR.object3D.position;
+      var ctlRRot=handCtlR.object3D.rotation;
+      balcon.object3D.position.set(ctlRPos.x - 0.5, ctlRPos.y - 2, ctlRPos.z - 4);
+      balcon.object3D.rotation.set(ctlRRot.x, ctlRRot.y - 2, ctlRRot.z);
+    }, 100);
+  </script>
+  <script>
+  </script>
 </html>
+
+
+
+
